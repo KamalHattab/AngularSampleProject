@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AboutService} from '../services/about.service';
 
 @Component({
   selector: 'app-about',
@@ -6,27 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./about.component.css']
 })
 export class AboutComponent implements OnInit {
-  info= {
-  name:"kamal",
-  mail:"h.kamal@live.it",
-  tel:3806991899
-}
-comments=[
-  {date:new Date(),message:"A"},
-  {date:new Date(),message:"B"},
-  {date:new Date(),message:"C"}
-]
-  commentaire = {date:null, message: ''}
-
-  constructor() { }
+  infos:any;
+  comments=[];
+  commentaire = {date:null, message: ''};
+  constructor(private aboutService:AboutService) {
+    this.infos=this.aboutService.getInfo();
+    this.comments=this.aboutService.getAllComments();
+    this.commentaire=this.aboutService.getCommentaire();
+  }
 
   ngOnInit() {
   }
-  onAddComment(c) {
-    console.log(c)
-    this.commentaire.date=new Date();
-    this.commentaire.message=c.message
-    this.comments.push(this.commentaire);
-     this.commentaire={date:null,message:""}
+
+  onAddComment(c){
+    this.aboutService.addComment(c)
+    this.commentaire = {date:null, message: ''};
   }
 }
